@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rest-domain-state-manager — 2davi Lab</title>
+  <meta name="description" content="REST API 연동 도메인 상태 관리 라이브러리 공식 문서" />
+
+  <!-- Highlight.js -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="../_shared/site.css" />
+</head>
+<body>
+
+<!-- ── Sidebar Overlay (Mobile) ──────────────────────────────────────────── -->
+<div id="sidebar-overlay"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:150;"></div>
+
+<!-- ── Topbar ─────────────────────────────────────────────────────────────── -->
+<header class="topbar">
+  <a class="topbar-logo" href="../">
+    <div class="topbar-logo-mark">2d</div>
+    <div>
+      <div class="topbar-logo-text">2davi Lab</div>
+      <div class="topbar-logo-sub">dev laboratory</div>
+    </div>
+  </a>
+  <div class="topbar-content">
+    <div class="topbar-breadcrumb">
+      <button class="hamburger" id="hamburger" aria-label="메뉴">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <a href="../">Lab</a>
+      <span class="sep">/</span>
+      <span class="current">rest-domain-state-manager</span>
+    </div>
+    <div class="topbar-actions">
+      <a class="btn-ghost btn-lang" href="./en.html">EN</a>
+      <a class="btn-ghost btn-github"
+         href="https://github.com/2davi/rest-domain-state-manager"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
+<nav class="sidebar" id="sidebar">
+  <a class="sidebar-hub-link" href="../">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    All Projects
+  </a>
+
+  <!-- Part 1 -->
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">Getting Started</div>
+    <ul class="sidebar-nav">
+      <li><a href="#quick-nav">빠른 길잡이</a></li>
+      <li><a href="#installation">설치 <span class="nav-badge light">1-1</span></a></li>
+      <li><a href="#apihandler">ApiHandler 생성 <span class="nav-badge light">1-2</span></a></li>
+      <li><a href="#get-modify-save">GET → 변경 → 저장 <span class="nav-badge light">1-3</span></a></li>
+      <li><a href="#post-new">신규 생성 → POST <span class="nav-badge light">1-4</span></a></li>
+      <li><a href="#pipeline-basic">여러 API 한 번에 <span class="nav-badge light">1-5</span></a></li>
+      <li><a href="#renderer-basic">목록 UI 렌더링 <span class="nav-badge light">1-6</span></a></li>
+    </ul>
+  </div>
+
+  <!-- Part 2 -->
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">Deep Dive</div>
+    <ul class="sidebar-nav">
+      <li><a href="#apihandler-options">ApiHandler 전체 옵션 <span class="nav-badge heavy">2-1</span></a></li>
+      <li><a href="#domainvo">DomainVO 필드 선언 <span class="nav-badge heavy">2-2</span></a></li>
+      <li><a href="#domainstate-internals">DomainState 내부 구조 <span class="nav-badge heavy">2-3</span></a></li>
+      <li><a href="#factory-methods">팩토리 메서드 상세 <span class="nav-badge heavy">2-4</span></a></li>
+      <li><a href="#save-strategy">save() 분기 전략 <span class="nav-badge heavy">2-5</span></a></li>
+      <li><a href="#pipeline-strict">Pipeline strict 모드 <span class="nav-badge heavy">2-6</span></a></li>
+      <li><a href="#renderto-config">renderTo() 전체 config <span class="nav-badge heavy">2-7</span></a></li>
+      <li><a href="#plugin-system">플러그인 시스템 <span class="nav-badge heavy">2-8</span></a></li>
+      <li><a href="#debug-popup">Debug Popup <span class="nav-badge heavy">2-9</span></a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Main Content ────────────────────────────────────────────────────────── -->
+<main class="main">
+<article class="content">
+
+  <!-- Page Header -->
+  <h1>rest-domain-state-manager</h1>
+  <p class="subtitle">
+    REST API 응답 데이터를 Proxy로 감싸 변경을 자동 추적하고,
+    저장 시점에 최적의 HTTP 메서드(POST / PUT / PATCH)로 자동 분기하는
+    순수 ES Module 기반 도메인 상태 관리 라이브러리.
+    <br><br>
+    <code>번들러 없음</code> &nbsp;·&nbsp; <code>npm 없음</code> &nbsp;·&nbsp; <code>외부 의존성 없음</code>
+  </p>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- QUICK NAVIGATOR                                                        -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <span class="section-anchor" id="quick-nav"></span>
+  <h2>빠른 길잡이</h2>
+  <p>목적에 해당하는 항목을 선택해 해당 섹션으로 이동한다.</p>
+
+  <div class="quick-nav-grid">
+    <a class="quick-nav-item" href="#installation">
+      <span class="nav-num">1-1</span>일단 돌려보고 싶다
+    </a>
+    <a class="quick-nav-item" href="#get-modify-save">
+      <span class="nav-num">1-3</span>GET 후 수정하여 저장
+    </a>
+    <a class="quick-nav-item" href="#post-new">
+      <span class="nav-num">1-4</span>신규 데이터를 POST로 등록
+    </a>
+    <a class="quick-nav-item" href="#pipeline-basic">
+      <span class="nav-num">1-5</span>여러 API를 한 번에 호출
+    </a>
+    <a class="quick-nav-item" href="#renderer-basic">
+      <span class="nav-num">1-6</span>목록을 select / radio로 렌더링
+    </a>
+    <a class="quick-nav-item" href="#apihandler-options">
+      <span class="nav-num">2-1</span>ApiHandler URL 세밀하게 제어
+    </a>
+    <a class="quick-nav-item" href="#domainvo">
+      <span class="nav-num">2-2</span>유효성 검사 / 타입 변환 붙이기
+    </a>
+    <a class="quick-nav-item" href="#domainstate-internals">
+      <span class="nav-num">2-3</span>Proxy 변경 추적 원리
+    </a>
+    <a class="quick-nav-item" href="#save-strategy">
+      <span class="nav-num">2-5</span>save()가 메서드를 결정하는 기준
+    </a>
+    <a class="quick-nav-item" href="#renderto-config">
+      <span class="nav-num">2-7</span>renderTo() 모든 옵션
+    </a>
+    <a class="quick-nav-item" href="#plugin-system">
+      <span class="nav-num">2-8</span>커스텀 플러그인 만들기
+    </a>
+    <a class="quick-nav-item" href="#debug-popup">
+      <span class="nav-num">2-9</span>실시간 디버그 팝업
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- PART 1                                                                 -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="part-header light">⚡ Part 1 — Getting Started</div>
+
+  <!-- ── 1-1. 설치 ─────────────────────────────────────────────────────── -->
+  <span class="section-anchor" id="installation"></span>
+  <h2>1-1. 설치</h2>
+  <p>번들러, npm, CDN 불필요. 폴더째 복사 후 <code>import</code>만 하면 된다.</p>
+
+  <pre><code class="language-text">your-project/
+├── rest-domain-state-manager/   ← 복사한 라이브러리 폴더
+└── index.html</code></pre>
+
+  <pre><code class="language-html">&lt;!-- index.html --&gt;
+&lt;script type="module"&gt;
+  import { ApiHandler, DomainState }
+    from './rest-domain-state-manager/rest-domain-state-manager.js';
+&lt;/script&gt;</code></pre>
+
+  <!-- ── 1-2. ApiHandler ───────────────────────────────────────────────── -->
+  <span class="section-anchor" id="apihandler"></span>
+  <h2>1-2. ApiHandler 생성</h2>
+  <p>
+    <code>ApiHandler</code>는 HTTP 전송을 담당하는 클래스다.
+    인스턴스 생성은 소비자가 직접 한다. 서버 주소를 여기서 결정한다.
+  </p>
+
+  <pre><code class="language-javascript">const api = new ApiHandler({
+  host:  'localhost:8080',  // 서버 주소
+  debug: true,              // true → HTTP 자동 선택, 콘솔 로그 활성화
+});</code></pre>
+
+  <div class="callout info">
+    <span class="callout-icon">💡</span>
+    <div>백엔드 서버가 여러 개라면 각각 인스턴스를 만들어 쓴다. 생성 시 주입된 서버가 해당 <code>DomainState</code>의 모든 요청 대상이 된다.</div>
+  </div>
+
+  <pre><code class="language-javascript">const userApi  = new ApiHandler({ host: 'user-service.com' });
+const orderApi = new ApiHandler({ host: 'order-service.com' });
+
+// 각자 맞는 api를 팩토리에 넘김
+const user  = await userApi.get('/api/users/1');
+const order = await orderApi.get('/api/orders/999');
+
+// save()도 생성 시 주입된 api 그대로 사용
+await user.save('/api/users/1');    // → user-service.com
+await order.save('/api/orders/999'); // → order-service.com</code></pre>
+
+  <!-- ── 1-3. GET → 변경 → 저장 ────────────────────────────────────────── -->
+  <span class="section-anchor" id="get-modify-save"></span>
+  <h2>1-3. GET → 변경 → 저장</h2>
+  <p>
+    <code>api.get()</code>은 서버에서 데이터를 가져와 <code>DomainState</code> 인스턴스를 반환한다.
+    이후 <code>.data</code>를 통해 값을 읽고 쓴다.
+  </p>
+
+  <pre><code class="language-javascript">// 1. GET 요청 → DomainState 생성
+const user = await api.get('/api/users/user_001');
+
+// 2. 데이터 읽기
+console.log(user.data.name);
+
+// 3. 데이터 변경 (Proxy가 자동으로 변경을 추적)
+user.data.name         = 'Davi';
+user.data.address.city = 'Seoul';   // 중첩 객체도 추적
+
+// 4. 저장
+//   변경이 있으면 → PATCH (변경된 필드만 전송)
+//   변경이 없으면 → PUT  (전체 객체 전송)
+await user.save('/api/users/user_001');
+
+// 5. 삭제
+await user.remove('/api/users/user_001');</code></pre>
+
+  <!-- ── 1-4. 신규 생성 → POST ──────────────────────────────────────────── -->
+  <span class="section-anchor" id="post-new"></span>
+  <h2>1-4. 신규 생성 → POST</h2>
+  <p>신규 데이터 생성에는 <code>fromVO()</code> 또는 <code>fromForm()</code> 팩토리를 쓴다. 두 방법 모두 <code>save()</code> 호출 시 POST로 전송한다.</p>
+
+  <h3>fromVO() — DomainVO 기반 생성</h3>
+  <pre><code class="language-javascript">// 1. DomainVO 선언
+class UserVO extends DomainVO {
+  static baseURL = 'localhost:8080/api/users'; // save() 경로 자동 사용
+  static fields  = {
+    user_id: { default: '' },
+    name:    { default: '' },
+    role:    { default: 'USER' },
+    address: { default: { city: '', zip: '' } },
+  };
+}
+
+// 2. DomainState 생성 (isNew: true)
+const newUser = DomainState.fromVO(new UserVO(), api);
+
+// 3. 값 설정
+newUser.data.user_id = 'user_' + Date.now();
+newUser.data.name    = 'Davi';
+
+// 4. POST 전송 (static baseURL 자동 사용)
+await newUser.save();</code></pre>
+
+  <h3>fromForm() — HTML Form 기반 생성</h3>
+  <pre><code class="language-html">&lt;form id="user-form"&gt;
+  &lt;input name="name" /&gt;
+  &lt;input name="address.city" /&gt;  &lt;!-- 점(.) 표기로 중첩 구조 표현 --&gt;
+  &lt;select name="role"&gt;...&lt;/select&gt;
+&lt;/form&gt;</code></pre>
+
+  <pre><code class="language-javascript">// form 초기화 후 blur / change 이벤트를 자동으로 추적
+const formState = DomainState.fromForm('user-form', api);
+
+// 사용자가 입력을 마치면 변경이 자동으로 기록되어 있음
+await formState.save('/api/users');</code></pre>
+
+  <!-- ── 1-5. DomainPipeline ────────────────────────────────────────────── -->
+  <span class="section-anchor" id="pipeline-basic"></span>
+  <h2>1-5. 여러 API 한 번에 (DomainPipeline)</h2>
+  <p>
+    <code>DomainState.all()</code>은 여러 API를 병렬로 호출하고,
+    완료 후 후처리를 순서대로 실행한다.
+  </p>
+
+  <pre><code class="language-javascript">const result = await DomainState.all({
+  roles: api.get('/api/roles'),
+  user:  api.get('/api/users/user_001'),
+})
+.after('roles', async (roles) => {
+  // roles → DomainState 인스턴스
+  console.log(roles.data);
+})
+.after('user', async (user) => {
+  console.log(user.data);
+})
+.run();
+
+// result → { roles: DomainState, user: DomainState }
+
+if (result._errors?.length) {
+  console.warn('일부 실패:', result._errors);
+}</code></pre>
+
+  <!-- ── 1-6. DomainRenderer ────────────────────────────────────────────── -->
+  <span class="section-anchor" id="renderer-basic"></span>
+  <h2>1-6. 목록을 UI 요소로 렌더링 (DomainRenderer)</h2>
+  <p>
+    <code>DomainRenderer</code> 플러그인을 등록하면 <code>DomainState</code>에
+    <code>renderTo()</code> 메서드가 추가된다.
+  </p>
+
+  <pre><code class="language-javascript">// 앱 초기화 시 1회 등록
+DomainState.use(DomainRenderer);
+
+const roles = await api.get('/api/roles');
+
+// select
+roles.renderTo('#role-select', {
+  type:        'select',
+  valueField:  'roleId',
+  labelField:  'roleName',
+  class:       'form-select',
+  placeholder: '역할 선택',
+  events: {
+    change: (e) => console.log('선택:', e.target.value),
+  },
+});
+
+// radio
+roles.renderTo('#role-radio', {
+  type:           'radio',
+  valueField:     'roleId',
+  labelField:     'roleName',
+  containerClass: 'form-check',
+  class:          'form-check-input',
+  labelClass:     'form-check-label',
+});</code></pre>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- PART 2                                                                 -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <div class="part-header heavy" style="margin-top:56px;">🔬 Part 2 — Deep Dive</div>
+
+  <!-- ── 2-1. ApiHandler 전체 옵션 ─────────────────────────────────────── -->
+  <span class="section-anchor" id="apihandler-options"></span>
+  <h2>2-1. ApiHandler 전체 옵션</h2>
+  <p><code>ApiHandler</code> 생성자는 <code>UrlConfig</code> 객체를 받는다.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>옵션</th><th>타입</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><code>host</code></td><td>string</td><td>프로토콜을 제외한 호스트 (예: <code>api.example.com</code>)</td></tr>
+        <tr><td><code>basePath</code></td><td>string</td><td>공통 경로 접두사 (예: <code>/app/api</code>)</td></tr>
+        <tr><td><code>baseURL</code></td><td>string</td><td>host + basePath 통합 문자열</td></tr>
+        <tr><td><code>protocol</code></td><td>string</td><td><code>'HTTP'</code> | <code>'HTTPS'</code> | <code>'FILE'</code> | <code>'SSH'</code></td></tr>
+        <tr><td><code>env</code></td><td>string</td><td><code>'development'</code> | <code>'production'</code></td></tr>
+        <tr><td><code>debug</code></td><td>boolean</td><td>true이면 개발 환경으로 간주</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div><code>host</code>와 <code>baseURL</code>은 택일이다. 동시에 입력하면 자동 해소를 시도하고, 해소 불가능한 경우 Error를 throw한다.</div>
+  </div>
+
+  <pre><code class="language-javascript">// 방식 1 — 구조 분해형
+const api = new ApiHandler({
+  host:     'api.example.com',
+  basePath: '/app/api',
+  env:      'production',       // HTTPS 자동 선택
+});
+
+// 방식 2 — 통합 문자열형
+const api = new ApiHandler({
+  baseURL: 'localhost:8080/app/api',
+  debug:   true,    // HTTP 자동 선택
+});</code></pre>
+
+  <h3>프로토콜 결정 우선순위</h3>
+  <pre><code class="language-text">1. 명시적 protocol 옵션
+2. env 값 → development: HTTP, production: HTTPS
+3. env 없음 + debug: true  → HTTP
+4. env 없음 + debug: false → HTTPS</code></pre>
+
+  <h3>요청별 URL 오버라이드</h3>
+  <pre><code class="language-javascript">const user = await api.get('/api/users/1', {
+  urlConfig: { host: 'other-server.com' },
+});</code></pre>
+
+  <!-- ── 2-2. DomainVO ──────────────────────────────────────────────────── -->
+  <span class="section-anchor" id="domainvo"></span>
+  <h2>2-2. DomainVO 필드 선언</h2>
+  <p>
+    <code>DomainVO</code>는 도메인 구조를 선언하는 베이스 클래스다.
+    <code>DomainState.fromVO()</code>의 인자로 사용하며 세 가지를 제공한다.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>제공 항목</th><th>선언 방법</th><th>사용 시점</th></tr></thead>
+      <tbody>
+        <tr><td>기본값 골격(Skeleton)</td><td><code>default</code> 키</td><td><code>fromVO()</code> 호출 시 초기 객체 생성</td></tr>
+        <tr><td>유효성 검사(Validator)</td><td><code>validate</code> 함수</td><td><code>save()</code> 전 각 필드 검사</td></tr>
+        <tr><td>타입 변환(Transformer)</td><td><code>transform</code> 함수</td><td><code>save()</code> 직전 직렬화 시 변환</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <pre><code class="language-javascript">class ProductVO extends DomainVO {
+  static baseURL = 'localhost:8080/api/products';
+
+  static fields = {
+    productId: {
+      default: '',
+    },
+    name: {
+      default:  '',
+      validate: (v) => v.trim().length > 0,   // 빈 문자열 거부
+    },
+    price: {
+      default:   0,
+      validate:  (v) => v >= 0,               // 음수 거부
+      transform: Number,                       // 문자열 입력 → 숫자 변환
+    },
+    tags: {
+      default: [],                             // 배열도 선언 가능
+    },
+    meta: {
+      default: { createdAt: '', updatedAt: '' },  // 중첩 객체
+    },
+  };
+}</code></pre>
+
+  <h3>static baseURL 폴백</h3>
+  <pre><code class="language-javascript">const product = DomainState.fromVO(new ProductVO(), api);
+await product.save();                           // static baseURL로 POST
+await product.save('/api/products/override');   // 명시하면 오버라이드</code></pre>
+
+  <h3>checkSchema(data)</h3>
+  <p><code>fromJSON()</code>에 <code>vo</code> 옵션을 함께 넘기면 서버 응답이 VO 스키마와 일치하는지 검증한다.</p>
+  <pre><code class="language-javascript">const product = DomainState.fromJSON(jsonText, api, { vo: new ProductVO() });
+// 스키마 불일치 시 콘솔에 경고 출력 (실행은 계속)</code></pre>
+
+  <!-- ── 2-3. DomainState 내부 구조 ─────────────────────────────────────── -->
+  <span class="section-anchor" id="domainstate-internals"></span>
+  <h2>2-3. DomainState 내부 구조</h2>
+
+  <h3>Proxy와 data</h3>
+  <p>
+    <code>.data</code>는 원본 객체를 Proxy로 감싼 것이다.
+    Proxy는 <code>set</code> / <code>deleteProperty</code> 트랩을 통해 모든 변경을 <code>changeLog</code>에 기록한다.
+  </p>
+
+  <pre><code class="language-javascript">const user = await api.get('/api/users/1');
+
+user.data.name = 'Davi';
+// changeLog = [{ op: 'replace', path: '/name', value: 'Davi', oldValue: '기존값' }]
+
+user.data.address.city = 'Seoul';   // 중첩도 자동 추적
+// changeLog = [..., { op: 'replace', path: '/address/city', value: 'Seoul' }]
+
+delete user.data.phone;
+// changeLog = [..., { op: 'remove', path: '/phone', oldValue: '010-...' }]</code></pre>
+
+  <h3>isNew 플래그</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>팩토리</th><th>isNew</th><th>save() 결과</th></tr></thead>
+      <tbody>
+        <tr><td><code>api.get()</code> / <code>fromJSON()</code></td><td><code>false</code></td><td>변경 있으면 PATCH, 없으면 PUT</td></tr>
+        <tr><td><code>fromVO()</code></td><td><code>true</code></td><td>POST</td></tr>
+        <tr><td><code>fromForm()</code></td><td><code>true</code></td><td>POST</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>POST 성공 후 <code>isNew</code>는 자동으로 <code>false</code>로 전환된다.</p>
+
+  <h3>changeLog 직접 접근</h3>
+  <pre><code class="language-javascript">console.log(user._getChangeLog());
+// [ { op, path, value, oldValue }, ... ]</code></pre>
+
+  <!-- ── 2-4. 팩토리 메서드 상세 ───────────────────────────────────────── -->
+  <span class="section-anchor" id="factory-methods"></span>
+  <h2>2-4. 팩토리 메서드 상세</h2>
+
+  <h3>fromJSON(jsonText, handler, options?)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>옵션</th><th>타입</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><code>urlConfig</code></td><td>UrlConfig</td><td>URL 설정 오버라이드</td></tr>
+        <tr><td><code>debug</code></td><td>boolean</td><td>디버그 모드</td></tr>
+        <tr><td><code>label</code></td><td>string</td><td>디버그 팝업 표시 이름</td></tr>
+        <tr><td><code>vo</code></td><td>DomainVO</td><td>스키마 검증 + validators/transformers 주입</td></tr>
+        <tr><td><code>form</code></td><td>string | HTMLFormElement</td><td>응답 데이터를 지정한 form에 자동으로 채움</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <pre><code class="language-javascript">// GET 응답을 VO로 검증하면서 동시에 form에 값을 채움
+const user = DomainState.fromJSON(jsonText, api, {
+  vo:   new UserVO(),
+  form: 'user-form',
+});</code></pre>
+
+  <h3>fromForm(form, handler, options?)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>요소 타입</th><th>추적 이벤트</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td><code>input[type=text]</code>, <code>textarea</code></td><td><code>blur</code></td><td>타이핑 중 불필요한 set 트랩 방지</td></tr>
+        <tr><td><code>select</code>, <code>radio</code>, <code>checkbox</code></td><td><code>change</code></td><td>선택 즉시 값이 확정</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>fromVO(vo, handler, options?)</h3>
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div><code>label</code>을 생략하면 클래스 이름(<code>UserVO</code>)이 자동으로 사용된다. 디버그 팝업에서 각 인스턴스를 구분하는 데 유용하다.</div>
+  </div>
+
+  <!-- ── 2-5. save() 분기 전략 ──────────────────────────────────────────── -->
+  <span class="section-anchor" id="save-strategy"></span>
+  <h2>2-5. save() 분기 전략</h2>
+  <p><code>save(path?)</code>는 <code>isNew</code>와 <code>changeLog</code> 길이를 보고 HTTP 메서드를 결정한다.</p>
+
+  <pre><code class="language-text">isNew === true
+    → POST  (전체 객체 직렬화)
+
+isNew === false
+    changeLog.length > 0  → PATCH (RFC 6902 JSON Patch 배열)
+    changeLog.length === 0 → PUT  (전체 객체 직렬화)</code></pre>
+
+  <pre><code class="language-javascript">await user.save('/api/users/user_001');  // 경로 명시
+await user.save();                       // urlConfig 또는 static baseURL 사용</code></pre>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>전송 결과</th><th>후처리</th></tr></thead>
+      <tbody>
+        <tr><td>PATCH / PUT 성공</td><td><code>changeLog</code> 자동 초기화</td></tr>
+        <tr><td>POST 성공</td><td><code>isNew → false</code> 전환 + <code>changeLog</code> 초기화</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── 2-6. DomainPipeline strict ────────────────────────────────────── -->
+  <span class="section-anchor" id="pipeline-strict"></span>
+  <h2>2-6. DomainPipeline strict 모드 / _errors 처리</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>strict</th><th>동작</th><th>반환</th></tr></thead>
+      <tbody>
+        <tr><td><code>false</code> (기본값)</td><td>실패 시 <code>_errors</code>에 기록 후 계속 진행</td><td>resolve + <code>_errors</code> 포함</td></tr>
+        <tr><td><code>true</code></td><td>첫 실패에서 즉시 reject</td><td>reject</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <pre><code class="language-javascript">// strict: false — 부분 실패 허용 (기본)
+const result = await DomainState.all({
+  roles: api.get('/api/roles'),
+  user:  api.get('/api/users/INVALID'),  // 실패
+}, { strict: false })
+.after('roles', async (roles) => { /* ... */ })
+.run();
+
+result._errors?.forEach(({ key, error }) => console.warn(key, error));</code></pre>
+
+  <pre><code class="language-javascript">// strict: true — 첫 실패에서 중단
+try {
+  await DomainState.all({ ... }, { strict: true })
+    .after('roles', async (roles) => { /* ... */ })
+    .run();
+} catch (err) {
+  console.error('Pipeline 중단:', err);
+}</code></pre>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ️</span>
+    <div><code>after()</code>의 실행 순서는 등록 순서를 따른다. fetch 완료 순서와는 무관하다.</div>
+  </div>
+
+  <!-- ── 2-7. renderTo() 전체 config ────────────────────────────────────── -->
+  <span class="section-anchor" id="renderto-config"></span>
+  <h2>2-7. renderTo() 전체 config</h2>
+
+  <h4>공통 옵션 (모든 type)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>옵션</th><th>타입</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><code>type</code></td><td>string</td><td><code>'select'</code> | <code>'radio'</code> | <code>'checkbox'</code> | <code>'button'</code></td></tr>
+        <tr><td><code>valueField</code></td><td>string</td><td>각 항목의 <code>value</code> 출처 필드명</td></tr>
+        <tr><td><code>labelField</code></td><td>string</td><td>각 항목의 표시 텍스트 출처 필드명</td></tr>
+        <tr><td><code>class</code></td><td>string</td><td>요소의 <code>className</code></td></tr>
+        <tr><td><code>css</code></td><td>object</td><td>요소의 inline style (camelCase 키)</td></tr>
+        <tr><td><code>events</code></td><td>object</td><td><code>{ 이벤트명: 핸들러 }</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>select 추가 옵션</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>옵션</th><th>타입</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><code>placeholder</code></td><td>string</td><td>첫 번째 비활성 옵션 텍스트</td></tr>
+        <tr><td><code>multiple</code></td><td>boolean</td><td>다중 선택 여부</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>radio / checkbox 추가 옵션</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>옵션</th><th>타입</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><code>name</code></td><td>string</td><td><code>input[name]</code> 속성. 미입력 시 <code>valueField</code> 자동 사용</td></tr>
+        <tr><td><code>containerClass</code></td><td>string</td><td>각 항목 wrapper div의 className</td></tr>
+        <tr><td><code>containerCss</code></td><td>object</td><td>각 항목 wrapper div의 inline style</td></tr>
+        <tr><td><code>labelClass</code></td><td>string</td><td>label 요소의 className</td></tr>
+        <tr><td><code>labelCss</code></td><td>object</td><td>label 요소의 inline style</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div><code>name</code> 기본값이 <code>valueField</code>인 이유: MyBatis form submit 시 필드명이 자동으로 일치한다.</div>
+  </div>
+
+  <h4>button</h4>
+  <p><code>valueField</code> 값이 <code>button[data-value]</code> 속성으로 주입된다. 클릭 핸들러에서 <code>e.target.dataset.value</code>로 읽는다.</p>
+
+  <pre><code class="language-javascript">roles.renderTo('#role-buttons', {
+  type:       'button',
+  valueField: 'roleId',
+  labelField: 'roleName',
+  class:      'btn btn-sm btn-outline-primary',
+  events: {
+    click: (e) => console.log(e.target.dataset.value),
+  },
+});</code></pre>
+
+  <!-- ── 2-8. 플러그인 시스템 ────────────────────────────────────────────── -->
+  <span class="section-anchor" id="plugin-system"></span>
+  <h2>2-8. 플러그인 시스템 (use())</h2>
+  <p>
+    <code>DomainState.use(plugin)</code>은 <code>{ install(DomainState): void }</code>
+    계약을 가진 플러그인을 등록한다.
+  </p>
+
+  <pre><code class="language-javascript">const MyPlugin = {
+  install(DomainState) {
+    // prototype에 메서드 주입
+    DomainState.prototype.toCSV = function () {
+      const target = this._getTarget();
+      return Object.values(target).join(',');
+    };
+  },
+};
+
+DomainState.use(MyPlugin);
+
+const user = await api.get('/api/users/1');
+console.log(user.toCSV());</code></pre>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>특성</th><th>동작</th></tr></thead>
+      <tbody>
+        <tr><td>중복 등록</td><td>동일 플러그인 객체를 여러 번 <code>use()</code>해도 <code>install()</code>은 1회만 실행</td></tr>
+        <tr><td>체이닝</td><td><code>DomainState.use(A).use(B).use(C)</code></td></tr>
+        <tr><td>계약 미준수</td><td><code>install</code> 없으면 TypeError</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── 2-9. Debug Popup ───────────────────────────────────────────────── -->
+  <span class="section-anchor" id="debug-popup"></span>
+  <h2>2-9. Debug Popup</h2>
+  <p>
+    <code>debug: true</code>로 생성하면 디버그 채널이 활성화된다.
+    <code>openDebugger()</code>로 팝업을 열면 같은 출처(Origin)의 모든 탭의 상태를 실시간으로 확인할 수 있다.
+  </p>
+
+  <pre><code class="language-javascript">const user = DomainState.fromVO(new UserVO(), api, {
+  debug: true,
+  label: 'UserVO',  // 팝업에 표시될 이름
+});
+
+user.openDebugger();</code></pre>
+
+  <h3>팝업에서 확인할 수 있는 정보</h3>
+  <ul>
+    <li>탭 목록 (URL 기준)</li>
+    <li>각 탭의 DomainState 레이블</li>
+    <li>현재 <code>data</code> (실시간 갱신)</li>
+    <li><code>changeLog</code> 목록</li>
+    <li><code>_errors</code> 배열</li>
+  </ul>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div>브라우저 팝업 차단을 허용해야 한다. <code>fromForm()</code>으로 생성한 DomainState는 form 이벤트 발생 시 팝업이 자동으로 갱신된다.</div>
+  </div>
+
+  <h3>통신 방식</h3>
+  <p>
+    <code>BroadcastChannel</code> — 브라우저 내장 Web API, 외부 의존성 없음.
+    BroadcastChannel은 자기 자신이 보낸 메시지를 수신하지 않으므로,
+    TAB_PING을 팝업이 직접 broadcast하고 각 탭이 응답하는 구조로 동작한다.
+  </p>
+
+</article>
+</main>
+
+<script src="../_shared/site.js"></script>
+</body>
+</html>

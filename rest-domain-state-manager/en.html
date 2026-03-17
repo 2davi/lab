@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rest-domain-state-manager — 2davi Lab</title>
+  <meta name="description" content="Official documentation for rest-domain-state-manager" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="../_shared/site.css" />
+</head>
+<body>
+
+<div id="sidebar-overlay"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;"></div>
+
+<header class="topbar">
+  <a class="topbar-logo" href="../en.html">
+    <div class="topbar-logo-mark">2d</div>
+    <div>
+      <div class="topbar-logo-text">2davi Lab</div>
+      <div class="topbar-logo-sub">dev laboratory</div>
+    </div>
+  </a>
+  <div class="topbar-content">
+    <div class="topbar-breadcrumb">
+      <button class="hamburger" id="hamburger" aria-label="menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <a href="../en.html">Lab</a>
+      <span class="sep">/</span>
+      <span class="current">rest-domain-state-manager</span>
+    </div>
+    <div class="topbar-actions">
+      <a class="btn-ghost btn-lang" href="./index.html">KO</a>
+      <a class="btn-ghost btn-github"
+         href="https://github.com/2davi/rest-domain-state-manager"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <a class="sidebar-hub-link" href="../en.html">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    All Projects
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">Getting Started</div>
+    <ul class="sidebar-nav">
+      <li><a href="#quick-nav">Quick Navigator</a></li>
+      <li><a href="#installation">Installation <span class="nav-badge light">1-1</span></a></li>
+      <li><a href="#apihandler">ApiHandler <span class="nav-badge light">1-2</span></a></li>
+      <li><a href="#get-modify-save">GET → Modify → Save <span class="nav-badge light">1-3</span></a></li>
+      <li><a href="#post-new">Create New → POST <span class="nav-badge light">1-4</span></a></li>
+      <li><a href="#pipeline-basic">Multiple APIs <span class="nav-badge light">1-5</span></a></li>
+      <li><a href="#renderer-basic">Render List as UI <span class="nav-badge light">1-6</span></a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">Deep Dive</div>
+    <ul class="sidebar-nav">
+      <li><a href="#apihandler-options">ApiHandler Full Options <span class="nav-badge heavy">2-1</span></a></li>
+      <li><a href="#domainvo">DomainVO Fields <span class="nav-badge heavy">2-2</span></a></li>
+      <li><a href="#domainstate-internals">DomainState Internals <span class="nav-badge heavy">2-3</span></a></li>
+      <li><a href="#factory-methods">Factory Methods <span class="nav-badge heavy">2-4</span></a></li>
+      <li><a href="#save-strategy">save() Strategy <span class="nav-badge heavy">2-5</span></a></li>
+      <li><a href="#pipeline-strict">Pipeline strict Mode <span class="nav-badge heavy">2-6</span></a></li>
+      <li><a href="#renderto-config">renderTo() Full Config <span class="nav-badge heavy">2-7</span></a></li>
+      <li><a href="#plugin-system">Plugin System <span class="nav-badge heavy">2-8</span></a></li>
+      <li><a href="#debug-popup">Debug Popup <span class="nav-badge heavy">2-9</span></a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">Architecture</div>
+    <ul class="sidebar-nav">
+      <li><a href="#arch-overview">Layer Overview</a></li>
+      <li><a href="#arch-drawbridge">Drawbridge Pattern</a></li>
+      <li><a href="#arch-proxy-traps">Proxy Trap Design</a></li>
+      <li><a href="#arch-dataflow">Data Flow</a></li>
+      <li><a href="#arch-files">File Structure</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">API Reference</div>
+    <ul class="sidebar-nav">
+      <li><a href="#ref-apihandler">ApiHandler</a></li>
+      <li><a href="#ref-domainstate">DomainState</a></li>
+      <li><a href="#ref-domainvo">DomainVO</a></li>
+      <li><a href="#ref-domainpipeline">DomainPipeline</a></li>
+      <li><a href="#ref-domainrenderer">DomainRenderer</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">Core Concepts</div>
+    <ul class="sidebar-nav">
+      <li><a href="#concept-identity">Library Identity</a></li>
+      <li><a href="#concept-sot">Single Source of Truth</a></li>
+      <li><a href="#concept-changelog">changeLog Structure</a></li>
+      <li><a href="#concept-isnew">isNew Flag</a></li>
+      <li><a href="#concept-lob">Locality of Behavior</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-group-label">Design Decisions</div>
+    <ul class="sidebar-nav">
+      <li><a href="#dd-proxy-scope">Proxy Scope</a></li>
+      <li><a href="#dd-http-method">HTTP Method Strategy</a></li>
+      <li><a href="#dd-deep-proxy">deep proxy Scope</a></li>
+      <li><a href="#dd-changelog-format">changeLog Format</a></li>
+      <li><a href="#dd-form-binding">Form Binding</a></li>
+      <li><a href="#dd-strict">strict Default</a></li>
+      <li><a href="#dd-broadcast">Debug Channel</a></li>
+      <li><a href="#dd-name-default">name Default</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="main">
+<article class="content">
+
+<h1>rest-domain-state-manager</h1>
+<p class="subtitle">
+  A pure ES Module library that wraps REST API response data in a Proxy for automatic
+  change tracking, then dispatches the optimal HTTP method (POST / PUT / PATCH) at save time.
+  <br><br>
+  <code>No bundler</code> &nbsp;·&nbsp; <code>No npm</code> &nbsp;·&nbsp; <code>No dependencies</code>
+</p>
+
+<span class="section-anchor" id="quick-nav"></span>
+<h2>Quick Navigator</h2>
+<div class="quick-nav-grid">
+  <a class="quick-nav-item" href="#installation"><span class="nav-num">1-1</span>Just get it running</a>
+  <a class="quick-nav-item" href="#get-modify-save"><span class="nav-num">1-3</span>Fetch, modify, and save</a>
+  <a class="quick-nav-item" href="#post-new"><span class="nav-num">1-4</span>POST new data</a>
+  <a class="quick-nav-item" href="#pipeline-basic"><span class="nav-num">1-5</span>Call multiple APIs at once</a>
+  <a class="quick-nav-item" href="#renderer-basic"><span class="nav-num">1-6</span>Render list as select/radio</a>
+  <a class="quick-nav-item" href="#apihandler-options"><span class="nav-num">2-1</span>Fine-tune ApiHandler URL</a>
+  <a class="quick-nav-item" href="#domainvo"><span class="nav-num">2-2</span>Add validation/transform</a>
+  <a class="quick-nav-item" href="#domainstate-internals"><span class="nav-num">2-3</span>Proxy change tracking</a>
+  <a class="quick-nav-item" href="#save-strategy"><span class="nav-num">2-5</span>How save() picks a method</a>
+  <a class="quick-nav-item" href="#renderto-config"><span class="nav-num">2-7</span>All renderTo() options</a>
+  <a class="quick-nav-item" href="#plugin-system"><span class="nav-num">2-8</span>Write a custom plugin</a>
+  <a class="quick-nav-item" href="#debug-popup"><span class="nav-num">2-9</span>Real-time debug popup</a>
+</div>
+
+<div class="part-header light">⚡ Part 1 — Getting Started</div>
+
+<span class="section-anchor" id="installation"></span>
+<h2>1-1. Installation</h2>
+<p>No bundler, npm, or CDN required. Copy the folder and import.</p>
+<pre><code class="language-text">your-project/
+├── rest-domain-state-manager/
+└── index.html</code></pre>
+<pre><code class="language-html">&lt;script type="module"&gt;
+  import { ApiHandler, DomainState }
+    from './rest-domain-state-manager/rest-domain-state-manager.js';
+&lt;/script&gt;</code></pre>
+
+<span class="section-anchor" id="apihandler"></span>
+<h2>1-2. Creating an ApiHandler</h2>
+<p><code>ApiHandler</code> handles HTTP transport. You create the instance — this is where you set the server address.</p>
+<pre><code class="language-javascript">const api = new ApiHandler({
+  host:  'localhost:8080',
+  debug: true,
+});
+// Multiple backends: create one instance per server
+const userApi  = new ApiHandler({ host: 'user-service.com' });
+const orderApi = new ApiHandler({ host: 'order-service.com' });</code></pre>
+
+<span class="section-anchor" id="get-modify-save"></span>
+<h2>1-3. GET → Modify → Save</h2>
+<pre><code class="language-javascript">const user = await api.get('/api/users/user_001');
+console.log(user.data.name);           // read
+user.data.name         = 'Davi';       // tracked → op: replace
+user.data.address.city = 'Seoul';      // nested → tracked
+await user.save('/api/users/user_001'); // PATCH (changes) or PUT (no changes)
+await user.remove('/api/users/user_001');</code></pre>
+
+<span class="section-anchor" id="post-new"></span>
+<h2>1-4. Creating New Data → POST</h2>
+<h3>fromVO()</h3>
+<pre><code class="language-javascript">class UserVO extends DomainVO {
+  static baseURL = 'localhost:8080/api/users';
+  static fields  = {
+    user_id: { default: '' },
+    name:    { default: '' },
+    role:    { default: 'USER' },
+    address: { default: { city: '', zip: '' } },
+  };
+}
+const newUser = DomainState.fromVO(new UserVO(), api);
+newUser.data.user_id = 'user_' + Date.now();
+newUser.data.name    = 'Davi';
+await newUser.save(); // POST to static baseURL</code></pre>
+
+<h3>fromForm()</h3>
+<pre><code class="language-html">&lt;form id="user-form"&gt;
+  &lt;input name="name" /&gt;
+  &lt;input name="address.city" /&gt;
+  &lt;select name="role"&gt;...&lt;/select&gt;
+&lt;/form&gt;</code></pre>
+<pre><code class="language-javascript">const formState = DomainState.fromForm('user-form', api);
+await formState.save('/api/users');</code></pre>
+
+<span class="section-anchor" id="pipeline-basic"></span>
+<h2>1-5. Multiple APIs at Once (DomainPipeline)</h2>
+<pre><code class="language-javascript">const result = await DomainState.all({
+  roles: api.get('/api/roles'),
+  user:  api.get('/api/users/user_001'),
+})
+.after('roles', async (roles) => { console.log(roles.data); })
+.after('user',  async (user)  => { console.log(user.data);  })
+.run();
+if (result._errors?.length) console.warn(result._errors);</code></pre>
+
+<span class="section-anchor" id="renderer-basic"></span>
+<h2>1-6. Rendering Lists as UI Elements (DomainRenderer)</h2>
+<pre><code class="language-javascript">DomainState.use(DomainRenderer); // register once
+const roles = await api.get('/api/roles');
+roles.renderTo('#role-select', {
+  type: 'select', valueField: 'roleId', labelField: 'roleName',
+  class: 'form-select', placeholder: 'Select a role',
+  events: { change: (e) => console.log(e.target.value) },
+});
+roles.renderTo('#role-radio', {
+  type: 'radio', valueField: 'roleId', labelField: 'roleName',
+  containerClass: 'form-check', class: 'form-check-input', labelClass: 'form-check-label',
+});</code></pre>
+
+<div class="part-header heavy" style="margin-top:56px;">🔬 Part 2 — Deep Dive</div>
+
+<span class="section-anchor" id="apihandler-options"></span>
+<h2>2-1. ApiHandler Full Options</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>host</code></td><td>string</td><td>Host without protocol (e.g. <code>api.example.com</code>)</td></tr>
+    <tr><td><code>basePath</code></td><td>string</td><td>Common path prefix (e.g. <code>/app/api</code>)</td></tr>
+    <tr><td><code>baseURL</code></td><td>string</td><td>Combined host + basePath string</td></tr>
+    <tr><td><code>protocol</code></td><td>string</td><td><code>'HTTP'|'HTTPS'|'FILE'|'SSH'</code></td></tr>
+    <tr><td><code>env</code></td><td>string</td><td><code>'development'|'production'</code></td></tr>
+    <tr><td><code>debug</code></td><td>boolean</td><td>When true, treated as development environment</td></tr>
+  </tbody>
+</table></div>
+<div class="callout warn"><span class="callout-icon">⚠️</span><div><code>host</code> and <code>baseURL</code> are mutually exclusive. Conflict auto-resolution is attempted; if impossible an Error is thrown.</div></div>
+<pre><code class="language-javascript">// Style 1 — decomposed
+const api = new ApiHandler({ host: 'api.example.com', basePath: '/app/api', env: 'production' });
+// Style 2 — unified
+const api = new ApiHandler({ baseURL: 'localhost:8080/app/api', debug: true });
+// Per-request override
+const user = await api.get('/api/users/1', { urlConfig: { host: 'other-server.com' } });</code></pre>
+<h3>Protocol resolution priority</h3>
+<pre><code class="language-text">1. Explicit protocol option
+2. env → development: HTTP, production: HTTPS
+3. No env + debug: true  → HTTP
+4. No env + debug: false → HTTPS</code></pre>
+
+<span class="section-anchor" id="domainvo"></span>
+<h2>2-2. DomainVO Field Declaration</h2>
+<pre><code class="language-javascript">class ProductVO extends DomainVO {
+  static baseURL = 'localhost:8080/api/products';
+  static fields = {
+    productId: { default: '' },
+    name:      { default: '', validate: (v) => v.trim().length > 0 },
+    price:     { default: 0,  validate: (v) => v >= 0, transform: Number },
+    tags:      { default: [] },
+    meta:      { default: { createdAt: '', updatedAt: '' } },
+  };
+}
+const product = DomainState.fromVO(new ProductVO(), api);
+await product.save(); // POST to static baseURL
+// Schema validation on GET response:
+const p2 = DomainState.fromJSON(jsonText, api, { vo: new ProductVO() });</code></pre>
+
+<span class="section-anchor" id="domainstate-internals"></span>
+<h2>2-3. DomainState Internals</h2>
+<pre><code class="language-javascript">const user = await api.get('/api/users/1');
+user.data.name         = 'Davi';   // changeLog: [{ op:'replace', path:'/name', ... }]
+user.data.address.city = 'Seoul';  // deep proxy → path '/address/city'
+delete user.data.phone;             // op: 'remove'
+console.log(user._getChangeLog());</code></pre>
+<div class="table-wrap"><table>
+  <thead><tr><th>Factory</th><th>isNew</th><th>save() result</th></tr></thead>
+  <tbody>
+    <tr><td><code>api.get()</code> / <code>fromJSON()</code></td><td><code>false</code></td><td>PATCH if changes, PUT if none</td></tr>
+    <tr><td><code>fromVO()</code></td><td><code>true</code></td><td>POST</td></tr>
+    <tr><td><code>fromForm()</code></td><td><code>true</code></td><td>POST</td></tr>
+  </tbody>
+</table></div>
+
+<span class="section-anchor" id="factory-methods"></span>
+<h2>2-4. Factory Methods in Detail</h2>
+<h3>fromJSON options</h3>
+<div class="table-wrap"><table>
+  <thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>urlConfig</code></td><td>UrlConfig</td><td>URL config override</td></tr>
+    <tr><td><code>debug</code></td><td>boolean</td><td>Debug mode</td></tr>
+    <tr><td><code>label</code></td><td>string</td><td>Debug popup display name</td></tr>
+    <tr><td><code>vo</code></td><td>DomainVO</td><td>Schema validation + inject validators/transformers</td></tr>
+    <tr><td><code>form</code></td><td>string|HTMLFormElement</td><td>Auto-populate form with response data</td></tr>
+  </tbody>
+</table></div>
+<h3>fromForm event tracking</h3>
+<div class="table-wrap"><table>
+  <thead><tr><th>Element</th><th>Event</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td><code>input[type=text]</code>, <code>textarea</code></td><td><code>blur</code></td><td>Avoids spurious set traps while typing</td></tr>
+    <tr><td><code>select</code>, <code>radio</code>, <code>checkbox</code></td><td><code>change</code></td><td>Value finalized immediately on selection</td></tr>
+  </tbody>
+</table></div>
+
+<span class="section-anchor" id="save-strategy"></span>
+<h2>2-5. save() Branching Strategy</h2>
+<pre><code class="language-text">isNew === true                    → POST  (toPayload)
+isNew === false
+    changeLog.length > 0          → PATCH (RFC 6902 JSON Patch)
+    changeLog.length === 0        → PUT   (toPayload)</code></pre>
+<pre><code class="language-javascript">await user.save('/api/users/1');  // explicit path
+await user.save();                // uses urlConfig or static baseURL</code></pre>
+<div class="table-wrap"><table>
+  <thead><tr><th>After successful request</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td>PATCH / PUT</td><td>changeLog cleared</td></tr>
+    <tr><td>POST</td><td>isNew → false + changeLog cleared</td></tr>
+  </tbody>
+</table></div>
+
+<span class="section-anchor" id="pipeline-strict"></span>
+<h2>2-6. DomainPipeline strict Mode / _errors Handling</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>strict</th><th>Behavior</th><th>Returns</th></tr></thead>
+  <tbody>
+    <tr><td><code>false</code> (default)</td><td>On failure: record to _errors, continue</td><td>resolve + _errors</td></tr>
+    <tr><td><code>true</code></td><td>Immediately reject on first failure</td><td>reject</td></tr>
+  </tbody>
+</table></div>
+<pre><code class="language-javascript">// strict: false
+const result = await DomainState.all({ roles: api.get('/api/roles'), user: api.get('/api/users/BAD') })
+  .after('roles', async r => { /* ... */ })
+  .run();
+result._errors?.forEach(({ key, error }) => console.warn(key, error));
+
+// strict: true
+try {
+  await DomainState.all({ ... }, { strict: true }).after('roles', r => {}).run();
+} catch (err) { console.error('Pipeline aborted:', err); }</code></pre>
+
+<span class="section-anchor" id="renderto-config"></span>
+<h2>2-7. renderTo() Full Config</h2>
+<h4>Common (all types)</h4>
+<div class="table-wrap"><table>
+  <thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>type</code></td><td>string</td><td><code>'select'|'radio'|'checkbox'|'button'</code></td></tr>
+    <tr><td><code>valueField</code></td><td>string</td><td>Field name used as each item's value</td></tr>
+    <tr><td><code>labelField</code></td><td>string</td><td>Field name used as display text</td></tr>
+    <tr><td><code>class</code></td><td>string</td><td>Element className</td></tr>
+    <tr><td><code>css</code></td><td>object</td><td>Inline style (camelCase keys)</td></tr>
+    <tr><td><code>events</code></td><td>object</td><td><code>{ eventName: handler }</code></td></tr>
+  </tbody>
+</table></div>
+<h4>select extras</h4>
+<div class="table-wrap"><table>
+  <thead><tr><th>Option</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>placeholder</code></td><td>First disabled option text</td></tr>
+    <tr><td><code>multiple</code></td><td>Enable multi-select</td></tr>
+  </tbody>
+</table></div>
+<h4>radio / checkbox extras</h4>
+<div class="table-wrap"><table>
+  <thead><tr><th>Option</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>name</code></td><td>input[name]. Defaults to valueField (MyBatis auto-match).</td></tr>
+    <tr><td><code>containerClass / containerCss</code></td><td>Wrapper div className / inline style</td></tr>
+    <tr><td><code>labelClass / labelCss</code></td><td>Label element className / inline style</td></tr>
+  </tbody>
+</table></div>
+<h4>button</h4>
+<p>valueField value is injected as <code>button[data-value]</code>. Read from <code>e.target.dataset.value</code>.</p>
+
+<span class="section-anchor" id="plugin-system"></span>
+<h2>2-8. Plugin System (use())</h2>
+<pre><code class="language-javascript">const MyPlugin = {
+  install(DomainState) {
+    DomainState.prototype.toCSV = function () {
+      return Object.values(this._getTarget()).join(',');
+    };
+  },
+};
+DomainState.use(MyPlugin).use(AnotherPlugin); // chainable
+const user = await api.get('/api/users/1');
+console.log(user.toCSV());</code></pre>
+<div class="callout info"><span class="callout-icon">ℹ️</span><div>Duplicate registration is silently ignored. <code>install()</code> runs at most once per plugin object. If the plugin has no <code>install</code> method, a TypeError is thrown.</div></div>
+
+<span class="section-anchor" id="debug-popup"></span>
+<h2>2-9. Debug Popup</h2>
+<pre><code class="language-javascript">const user = DomainState.fromVO(new UserVO(), api, { debug: true, label: 'UserVO' });
+user.openDebugger();</code></pre>
+<p>The popup shows all tabs on the same origin in real time: DomainState label, current data, changeLog entries, and _errors array.</p>
+<div class="callout warn"><span class="callout-icon">⚠️</span><div>Allow browser popup blocking for this to work. DomainState created via <code>fromForm()</code> auto-refreshes the popup on form events.</div></div>
+
+<!-- ARCHITECTURE -->
+<div class="part-header" style="margin-top:56px;background:#f0f4ff;color:#3730a3;border:1px solid #c7d2fe;">🏗 Architecture</div>
+
+<span class="section-anchor" id="arch-overview"></span>
+<h2>Layer Overview</h2>
+<pre><code class="language-text">┌──────────────────────────────────────────────────────────────────────┐
+│                           Entry Point                                │
+│                  rest-domain-state-manager.js                        │
+│        { ApiHandler, DomainState, DomainVO,                         │
+│          DomainPipeline, DomainRenderer }                            │
+└───────────────┬──────────────────────────────┬───────────────────────┘
+                │                              │
+┌───────────────▼──────────────┐  ┌────────────▼─────────────────────┐
+│           model/             │  │           plugin/                │
+│  DomainState                 │  │  DomainRenderer                  │
+│  DomainVO                    │  │    renderers/                    │
+│  DomainPipeline              │  └──────────────────────────────────┘
+└───────────────┬──────────────┘
+                │ internal calls
+┌───────────────▼──────────────────────────────────────────────────────┐
+│                           src/                                       │
+│  handler/   core/          constants/        debug/                 │
+│  ApiHandler api-proxy.js   error.messages    debug-channel.js       │
+│             api-mapper.js  op.const          (BroadcastChannel      │
+│             url-resolver   protocol.const     + popup HTML)         │
+└──────────────────────────────────────────────────────────────────────┘</code></pre>
+
+<span class="section-anchor" id="arch-drawbridge"></span>
+<h2>Drawbridge Pattern</h2>
+<p>
+  <code>createProxy()</code> returns four closures that <code>DomainState</code> stores internally.
+  This is called the <strong>Drawbridge Pattern</strong> — the library controls all four gates into the closure world,
+  and only exposes the <code>proxy</code> gate to the outside.
+</p>
+<pre><code class="language-javascript">// What createProxy() returns
+{
+  proxy:          object,     // The only public-facing gate
+  getChangeLog:   () => [],   // Internal gate: read change history
+  getTarget:      () => {},   // Internal gate: read the raw object
+  clearChangeLog: () => void, // Internal gate: reset after sync
+}</code></pre>
+<div class="callout info"><span class="callout-icon">💡</span><div>Consumers only ever touch <code>domainState.data</code> (the proxy). The other three closures are called exclusively by <code>DomainState</code> internals. This boundary guarantees changeLog integrity.</div></div>
+
+<span class="section-anchor" id="arch-proxy-traps"></span>
+<h2>Proxy Trap Design</h2>
+<h3>Path accumulation</h3>
+<pre><code class="language-javascript">proxy.address.city = 'Seoul'
+// get trap:  prop='address', basePath=''  → returns new Proxy(basePath='/address')
+// set trap:  prop='city',    basePath='/address' → records path '/address/city'</code></pre>
+<div class="table-wrap"><table>
+  <thead><tr><th>Trap</th><th>Trigger</th><th>op</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td><code>get</code></td><td>Property read</td><td>—</td><td>Returns deep proxy if value is Object/Array</td></tr>
+    <tr><td><code>set</code> (new key)</td><td>Assign to absent key</td><td><code>add</code></td><td>Also reflects on target</td></tr>
+    <tr><td><code>set</code> (replace)</td><td>Change existing value</td><td><code>replace</code></td><td>Records oldValue</td></tr>
+    <tr><td><code>deleteProperty</code></td><td><code>delete proxy.field</code></td><td><code>remove</code></td><td>Records oldValue</td></tr>
+  </tbody>
+</table></div>
+<h3>Bypass list</h3>
+<p>These are returned via <code>Reflect.get</code> without deep proxy wrapping: Symbol properties, <code>toJSON</code>, <code>then</code>, <code>valueOf</code>.</p>
+
+<span class="section-anchor" id="arch-dataflow"></span>
+<h2>Data Flow</h2>
+<h3>GET → Display</h3>
+<pre><code class="language-text">Server (JSON response)
+    ↓ fetch()
+api-handler._fetch()       — common headers, response.ok check
+    ↓ text (JSON string)
+api-mapper.toDomain()      — JSON.parse → plain object
+    ↓
+api-proxy.createProxy()    — wrap in Proxy, create drawbridge set
+    ↓
+DomainState constructor    — store metadata, broadcast to debug channel
+    ↓
+consumer code              — domainState.data.xxx read/write</code></pre>
+<h3>save()</h3>
+<pre><code class="language-text">domainState.save(path)
+    ↓ isNew check
+    ├─ true  → toPayload() → POST
+    └─ false → changeLog check
+                  ├─ length > 0 → toPatch()   → PATCH (RFC 6902)
+                  └─ length = 0 → toPayload() → PUT
+    ↓ on success
+clearChangeLog()   // isNew = false if POST</code></pre>
+
+<span class="section-anchor" id="arch-files"></span>
+<h2>File Structure</h2>
+<pre><code class="language-text">rest-domain-state-manager/
+├── rest-domain-state-manager.js     Single entry point
+├── proxy.test.html                  Integration tests (7 cases)
+├── model/
+│   ├── DomainState.js
+│   ├── DomainVO.js
+│   └── DomainPipeline.js
+├── src/
+│   ├── constants/
+│   │   ├── protocol.const.js
+│   │   ├── op.const.js
+│   │   ├── channel.const.js
+│   │   ├── error.messages.js
+│   │   └── log.messages.js
+│   ├── common/js-object-util.js
+│   ├── core/
+│   │   ├── api-proxy.js
+│   │   ├── url-resolver.js
+│   │   └── api-mapper.js
+│   ├── handler/api-handler.js
+│   └── debug/debug-channel.js
+└── plugin/
+    └── domain-renderer/
+        ├── DomainRenderer.js
+        ├── renderer.const.js
+        └── renderers/
+            ├── select.renderer.js
+            ├── radio-checkbox.renderer.js
+            └── button.renderer.js</code></pre>
+
+<!-- API REFERENCE -->
+<div class="part-header" style="margin-top:56px;background:#fdf4ff;color:#7e22ce;border:1px solid #e9d5ff;">📋 API Reference</div>
+
+<span class="section-anchor" id="ref-apihandler"></span>
+<h2>ApiHandler</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Method</th><th>Signature</th><th>Returns</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>get()</code></td><td><code>get(path, opts?)</code></td><td><code>Promise&lt;DomainState&gt;</code></td><td>GET → DomainState (isNew: false)</td></tr>
+    <tr><td><code>_fetch()</code></td><td><code>_fetch(url, opts?)</code></td><td><code>Promise&lt;string|null&gt;</code></td><td>Internal. Called by save/remove.</td></tr>
+    <tr><td><code>getUrlConfig()</code></td><td>—</td><td>object</td><td>Returns normalized URL config</td></tr>
+    <tr><td><code>isDebug()</code></td><td>—</td><td>boolean</td><td>Returns debug flag</td></tr>
+  </tbody>
+</table></div>
+<h3>Error structure</h3>
+<pre><code class="language-javascript">{ status: number, statusText: string, body: string }
+// thrown when response.ok is false</code></pre>
+
+<span class="section-anchor" id="ref-domainstate"></span>
+<h2>DomainState</h2>
+<h3>Static methods</h3>
+<div class="table-wrap"><table>
+  <thead><tr><th>Method</th><th>Signature</th><th>Returns</th></tr></thead>
+  <tbody>
+    <tr><td><code>fromJSON()</code></td><td><code>fromJSON(text, handler, opts?)</code></td><td>DomainState (isNew: false)</td></tr>
+    <tr><td><code>fromForm()</code></td><td><code>fromForm(form, handler, opts?)</code></td><td>DomainState (isNew: true)</td></tr>
+    <tr><td><code>fromVO()</code></td><td><code>fromVO(vo, handler, opts?)</code></td><td>DomainState (isNew: true)</td></tr>
+    <tr><td><code>all()</code></td><td><code>all(resourceMap, opts?)</code></td><td>DomainPipeline</td></tr>
+    <tr><td><code>use()</code></td><td><code>use(plugin)</code></td><td>DomainState (chainable)</td></tr>
+  </tbody>
+</table></div>
+<h3>Instance</h3>
+<div class="table-wrap"><table>
+  <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>.data</code></td><td>Proxy (getter)</td><td>The only public entry point for domain data</td></tr>
+    <tr><td><code>.save(path?)</code></td><td>Promise&lt;void&gt;</td><td>POST / PATCH / PUT auto-dispatch</td></tr>
+    <tr><td><code>.remove(path?)</code></td><td>Promise&lt;void&gt;</td><td>DELETE</td></tr>
+    <tr><td><code>.log()</code></td><td>void</td><td>Log changeLog to console (debug: true only)</td></tr>
+    <tr><td><code>.openDebugger()</code></td><td>void</td><td>Open debug popup (debug: true only)</td></tr>
+    <tr><td><code>._getChangeLog()</code></td><td>array</td><td>Internal. Shallow copy of change history.</td></tr>
+    <tr><td><code>._getTarget()</code></td><td>object</td><td>Internal. Raw underlying object.</td></tr>
+  </tbody>
+</table></div>
+
+<span class="section-anchor" id="ref-domainvo"></span>
+<h2>DomainVO</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>toSkeleton()</code></td><td>object</td><td>Build initial object from fields.default</td></tr>
+    <tr><td><code>getValidators()</code></td><td>object</td><td><code>{ field: fn }</code> map</td></tr>
+    <tr><td><code>getTransformers()</code></td><td>object</td><td><code>{ field: fn }</code> map</td></tr>
+    <tr><td><code>getBaseURL()</code></td><td>string|null</td><td>Returns static baseURL</td></tr>
+    <tr><td><code>checkSchema(data)</code></td><td><code>{ valid, missingKeys, extraKeys }</code></td><td>Compare response with schema</td></tr>
+  </tbody>
+</table></div>
+
+<span class="section-anchor" id="ref-domainpipeline"></span>
+<h2>DomainPipeline</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Method</th><th>Signature</th><th>Returns</th></tr></thead>
+  <tbody>
+    <tr><td><code>after()</code></td><td><code>after(key, handler)</code></td><td>DomainPipeline (chainable)</td></tr>
+    <tr><td><code>run()</code></td><td><code>run()</code></td><td><code>Promise&lt;{ [key]: DomainState, _errors? }&gt;</code></td></tr>
+  </tbody>
+</table></div>
+
+<span class="section-anchor" id="ref-domainrenderer"></span>
+<h2>DomainRenderer</h2>
+<p>After <code>DomainState.use(DomainRenderer)</code>, <code>renderTo(selector, config)</code> is available on all DomainState instances. Requires the instance to hold array data.</p>
+
+<!-- CORE CONCEPTS -->
+<div class="part-header" style="margin-top:56px;background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;">💡 Core Concepts</div>
+
+<span class="section-anchor" id="concept-identity"></span>
+<h2>Library Identity</h2>
+<p>This library is <strong>not an HTTP client</strong>. It uses <code>fetch()</code> internally, but its core value is not "how to send requests" — it is <strong>"tracking what changed and synchronizing correctly at save time"</strong>.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th></th><th>HTTP client</th><th>rest-domain-state-manager</th></tr></thead>
+  <tbody>
+    <tr><td>Focus</td><td>Request/response transport</td><td>Domain state change tracking + sync</td></tr>
+    <tr><td>Usage</td><td><code>fetch('/api', { method, body })</code></td><td><code>data.name = '...'</code> → auto-tracked</td></tr>
+    <tr><td>HTTP method</td><td>Developer decides</td><td>Library decides automatically</td></tr>
+    <tr><td>Change scope</td><td>Full payload</td><td>Changed paths only (RFC 6902 Patch)</td></tr>
+  </tbody>
+</table></div>
+
+<span class="section-anchor" id="concept-sot"></span>
+<h2>Single Source of Truth</h2>
+<p>While a screen is active, one <code>DomainState</code> instance holds the <em>single</em> truth for that resource. All changes — DOM elements, form input, direct assignment — flow exclusively through <code>domainState.data</code> (the Proxy).</p>
+<pre><code class="language-javascript">// Anti-pattern — reading DOM directly
+const payload = { name: document.getElementById('name').value };
+
+// Correct — Proxy is the single source
+const user = DomainState.fromForm('userForm', api);
+await user.save('/api/users/1');</code></pre>
+
+<span class="section-anchor" id="concept-changelog"></span>
+<h2>changeLog Structure</h2>
+<p>The <code>changeLog</code> is an ordered record of every mutation since the last sync. Each entry follows an internal format compatible with RFC 6902 JSON Patch.</p>
+<pre><code class="language-javascript">// Internal changeLog entry
+{ op: 'add'|'replace'|'remove', path: '/address/city', value: 'Seoul', oldValue: 'Busan' }
+
+// Converted to RFC 6902 when PATCH is dispatched
+[{ "op": "replace", "path": "/address/city", "value": "Seoul" }]</code></pre>
+
+<span class="section-anchor" id="concept-isnew"></span>
+<h2>isNew Flag</h2>
+<p><code>isNew</code> indicates whether this instance represents a resource not yet persisted to the server. It is set at factory call time and flipped to <code>false</code> automatically after a successful POST.</p>
+<pre><code class="language-javascript">const newUser = DomainState.fromVO(new UserVO(), api); // isNew: true
+await newUser.save();   // → POST
+// After success: isNew is now false
+newUser.data.name = 'Davi';
+await newUser.save();   // → PATCH (now treated as existing resource)</code></pre>
+
+<span class="section-anchor" id="concept-lob"></span>
+<h2>Locality of Behavior</h2>
+<p>This library treats <strong>Locality of Behavior</strong> as a core design principle. Related behavior should live together so reading the code reveals the full picture. One well-commented 50-line function is preferred over ten 5-line functions.</p>
+<pre><code class="language-javascript">// Design intent:
+// "What happens after save() should be predictable
+//  without reading the source."
+await user.save('/api/users/1');
+// isNew false + changes → PATCH
+// isNew false + no changes → PUT
+// isNew true → POST
+// One interface. Three predictable behaviors.</code></pre>
+
+<!-- DESIGN DECISIONS -->
+<div class="part-header" style="margin-top:56px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;">📝 Design Decisions</div>
+<p style="margin-bottom:32px;color:var(--text-3);">Each decision was made after evaluating alternatives and trade-offs. This is the record of "why it was designed this way."</p>
+
+<span class="section-anchor" id="dd-proxy-scope"></span>
+<h2>DD-1. Proxy Scope</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Option</th><th>Pros</th><th>Cons</th></tr></thead>
+  <tbody>
+    <tr><td>A. Service/domain layer only</td><td>No conflict with React immutability rules. Clear debug boundary.</td><td>View layer cannot enjoy "assignment = sync."</td></tr>
+    <tr><td>B. All the way to view/state layer</td><td><code>model.name = '...'</code> triggers sync directly.</td><td>Conflicts with React shallow comparison. Array type-check bugs. Harder to debug.</td></tr>
+  </tbody>
+</table></div>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: A</strong> — Service/domain layer only for the first implementation. React integration is deferred to a separate experimental branch.</div></div>
+
+<span class="section-anchor" id="dd-http-method"></span>
+<h2>DD-2. HTTP Method Strategy</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Option</th><th>Pros</th><th>Cons</th></tr></thead>
+  <tbody>
+    <tr><td>PUT only</td><td>Simple. No change tracking needed.</td><td>Misses the core goal of path-level tracking. Wasteful for large objects.</td></tr>
+    <tr><td>PATCH only</td><td>Send changed fields only.</td><td>Sends empty array when nothing changed. POST case unresolved.</td></tr>
+    <tr><td>POST / PATCH / PUT mixed</td><td>Semantically correct per scenario. PUT ensures idempotency when nothing changed.</td><td>Requires managing both isNew and changeLog.</td></tr>
+  </tbody>
+</table></div>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: Mixed (A+C)</strong> — isNew flag + changeLog length drive automatic three-way dispatch.</div></div>
+
+<span class="section-anchor" id="dd-deep-proxy"></span>
+<h2>DD-3. deep proxy Scope</h2>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: Object + 1D Array, incremental implementation</strong> — Design includes Array; implementation order is Object → Array index access → nested structures. Array mutating methods (<code>push</code>, <code>splice</code>) precision improvement is a future task.</div></div>
+
+<span class="section-anchor" id="dd-changelog-format"></span>
+<h2>DD-4. changeLog Format</h2>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: Internal format + conversion layer</strong> — Internal entries keep <code>oldValue</code> and extra metadata. <code>api-mapper.toPatch()</code> converts to RFC 6902 at send time.</div></div>
+
+<span class="section-anchor" id="dd-form-binding"></span>
+<h2>DD-5. Form Binding</h2>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: Path-based binding</strong> — <code>input[name]</code> dot notation encodes nested paths. <code>fromForm()</code> alone handles initialization + binding + tracking as a complete unit.</div></div>
+
+<span class="section-anchor" id="dd-strict"></span>
+<h2>DD-6. strict Default</h2>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: strict: false</strong> — HTTP requests are already spent cost. Post-processing handler failures are independent concerns; record them in <code>_errors</code> and continue. Use <code>strict: true</code> only when hard stopping is explicitly needed.</div></div>
+
+<span class="section-anchor" id="dd-broadcast"></span>
+<h2>DD-7. Debug Channel</h2>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: BroadcastChannel</strong> — Browser-native API, no dependencies. TAB_PING is broadcast by the popup itself (not the tab) to work around the self-message restriction. Popup HTML is generated as a string via <code>_buildPopupHTML()</code> — no separate HTML file needed.</div></div>
+
+<span class="section-anchor" id="dd-name-default"></span>
+<h2>DD-8. radio / checkbox name Default</h2>
+<div class="callout tip"><span class="callout-icon">✅</span><div><strong>Adopted: valueField as name default</strong> — Matches MyBatis ResultMap field names automatically for SI project JSP form submit patterns. Override with explicit <code>name</code> option only when a different name is needed.</div></div>
+
+</article>
+</main>
+
+<script src="../_shared/site.js"></script>
+</body>
+</html>

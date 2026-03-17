@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2davi Lab</title>
-  <meta name="description" content="개인 개발 실험실 — 라이브러리 및 도구 문서 허브" />
+  <meta name="description" content="Personal dev laboratory — documentation hub" />
   <link rel="stylesheet" href="./_shared/site.css" />
   <style>
-    /* Hub 전용: 사이드바 없음 */
     body { background: #f9fafb; }
     .topbar { background: var(--sb-bg); border-bottom: 1px solid var(--sb-border); }
     .topbar-content { background: var(--sb-bg); }
@@ -19,9 +18,8 @@
 </head>
 <body>
 
-<!-- ── Topbar ─────────────────────────────────────────────────────────────── -->
 <header class="topbar">
-  <a class="topbar-logo" href="./">
+  <a class="topbar-logo" href="./en.html">
     <div class="topbar-logo-mark">2d</div>
     <div>
       <div class="topbar-logo-text">2davi Lab</div>
@@ -33,11 +31,11 @@
       <span class="current">All Projects</span>
     </div>
     <div class="topbar-actions">
-      <a class="btn-ghost btn-lang" href="./en.html">EN</a>
+      <a class="btn-ghost btn-lang" href="./index.html">KO</a>
       <a class="btn-ghost btn-github"
          href="https://github.com/2davi"
          target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
           <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
         </svg>
         GitHub
@@ -46,30 +44,25 @@
   </div>
 </header>
 
-<!-- ── Main ───────────────────────────────────────────────────────────────── -->
 <main class="main">
-
-  <!-- Hero -->
   <section class="hub-hero">
-    <div class="hub-hero-badge">⚗️ 개발 실험실</div>
+    <div class="hub-hero-badge">⚗️ dev laboratory</div>
     <h1>2davi Lab</h1>
-    <p>개인 프로젝트 및 오픈소스 라이브러리 문서 허브입니다.<br>
-    각 프로젝트의 설치 방법, API 레퍼런스, 사용 예시를 확인하세요.</p>
+    <p>Documentation hub for personal projects and open-source libraries.<br>
+    Browse installation guides, API references, and usage examples for each project.</p>
   </section>
 
-  <!-- Projects -->
   <div class="hub-content">
     <div class="hub-section-label">📦 Projects</div>
     <div class="project-grid">
 
-      <!-- rest-domain-state-manager -->
-      <a class="project-card" href="./rest-domain-state-manager/">
+      <a class="project-card" href="./rest-domain-state-manager/en.html">
         <div class="card-icon">⚡</div>
         <div class="card-name">rest-domain-state-manager</div>
         <div class="card-desc">
-          REST API 응답 데이터를 Proxy로 감싸 변경을 자동 추적하고,
-          저장 시점에 최적의 HTTP 메서드로 자동 분기하는
-          순수 ES Module 기반 도메인 상태 관리 라이브러리.
+          A pure ES Module library that wraps REST API response data in a Proxy
+          for automatic change tracking, then dispatches the optimal HTTP method
+          (POST / PUT / PATCH) at save time. No bundler, no npm, no dependencies.
         </div>
         <div class="card-tags">
           <span class="card-tag">JavaScript</span>
@@ -79,7 +72,7 @@
         </div>
         <div class="card-footer">
           <span class="card-link">
-            문서 보기
+            View docs
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -88,27 +81,26 @@
         </div>
       </a>
 
-      <!-- Placeholder: 다음 프로젝트 -->
       <div class="project-card" style="opacity:0.45; cursor:default; pointer-events:none;">
         <div class="card-icon" style="background: linear-gradient(135deg,#374151,#4b5563);">🔧</div>
         <div class="card-name">coming-soon</div>
         <div class="card-desc">
-          다음 프로젝트가 여기에 추가됩니다.<br>
-          lab.the2davi.dev/{project-name} 형태로 접근할 수 있습니다.
+          The next project will appear here.<br>
+          Accessible at <code style="font-size:11px;background:#f3f4f6;padding:2px 5px;border-radius:3px;">lab.the2davi.dev/{project-name}</code>.
         </div>
         <div class="card-tags">
           <span class="card-tag">TBD</span>
         </div>
         <div class="card-footer">
-          <span class="card-link" style="color:#9ca3af;">준비 중</span>
+          <span class="card-link" style="color:#9ca3af;">In progress</span>
         </div>
       </div>
 
     </div>
 
-    <!-- Footer -->
     <p style="font-size:12px; color:#9ca3af; margin-top:8px;">
-      각 프로젝트는 <code style="font-family:'JetBrains Mono',monospace; background:#f3f4f6; padding:2px 6px; border-radius:3px; font-size:11px;">lab.the2davi.dev/{project-name}</code> 경로로 접근합니다.
+      Each project is accessible at
+      <code style="font-family:'JetBrains Mono',monospace; background:#f3f4f6; padding:2px 6px; border-radius:3px; font-size:11px;">lab.the2davi.dev/{project-name}</code>.
     </p>
   </div>
 </main>

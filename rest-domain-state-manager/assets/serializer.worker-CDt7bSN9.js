@@ -1,0 +1,1 @@
+(function(){"use strict";const a="dsm_debug";let e=null;function r(){return e||(typeof BroadcastChannel>"u"?null:(e=new BroadcastChannel(a),e))}self.onmessage=function(s){var n;const{type:l,tabId:o,tabUrl:u,payload:c}=s.data??{};if(l==="REGISTER_TAB"){let t;try{t=JSON.parse(c)}catch{t={}}(n=r())==null||n.postMessage({type:"TAB_REGISTER",tabId:o,tabUrl:u,states:t})}}})();

@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코코렌탈 용산점 원격지원 · 오렌지 대담</title>
+<meta name="description" content="코코렌탈 서울 용산점 원격지원. seetrol 보안 원격지원 프로그램을 받아 실행하고, 화면의 접속번호를 상담사에게 알려주면 안전하게 연결됩니다.">
+<style>
+/* =========================================================================
+   코코렌탈 용산점 원격지원 · 방향 C(오렌지 대담)
+   색만 바꾼 재탕이 아니라 레이아웃을 바꾼다:
+   - 중앙 정렬 히어로 + 투명 헤더(오렌지 위 흰 로고)
+   - 히어로 하단 웨이브 곡선 디바이더
+   - 다운로드: 우측 패널이 아니라 웨이브 경계에 걸친 가로 2카드 레일
+   - 스텝: 3열 그리드가 아니라 지그재그 타임라인(중앙 척추 + 좌우 교차)
+   크래프트 기준(자기완결 SVG, 깊이·겹침, 104px 리듬, 뷰포트별)은 유지.
+   ========================================================================= */
+:root{
+  --brand:#ff6c00; --brand-2:#f04f01; --brand-3:#ff8e3c; --brand-deep:#d64400;
+  --brand-soft:#fff3e9; --brand-line:#ffd9bd;
+  --ink:#241b13; --ink-2:#6a5c50; --ink-3:#9a8c80;
+  --line:#efe6dc; --bg:#ffffff; --bg-warm:#fbf5ef; --card:#ffffff;
+  --d0:#211a14; --d-ink-3:#b7a99c;
+  --ok:#22a862;
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:72px;--s9:104px;
+  --r-s:10px;--r-m:14px;--r-l:20px;--r-xl:26px;
+  --sh-1:0 1px 2px rgba(36,27,19,.05);
+  --sh-2:0 6px 16px rgba(36,27,19,.07),0 2px 4px rgba(36,27,19,.04);
+  --sh-3:0 30px 60px rgba(214,68,0,.22),0 10px 24px rgba(36,27,19,.10);
+  --sh-glow:0 18px 44px rgba(214,68,0,.32);
+  --f-13:13px;--f-15:15px;--f-17:17px;--f-20:20px;
+  --f-24:clamp(20px,2.6vw,24px);--f-34:clamp(26px,4vw,34px);--f-56:clamp(36px,6.6vw,58px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{margin:0;color:var(--ink);background:var(--bg);line-height:1.62;overflow-x:hidden;
+  font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid #fff;outline-offset:3px;border-radius:6px}
+.wrap{width:min(1160px,calc(100% - 40px));margin:0 auto}
+.only-mobile{display:none}
+
+.review{background:var(--brand-deep);color:#ffe6d3;font-size:var(--f-13);text-align:center;padding:8px 14px}
+.review b{color:#fff}
+
+/* ── MODULE:header (투명, 오렌지 히어로 위) ────────────────────── */
+.head{position:relative;z-index:10;padding-top:24px;margin-bottom:-96px}
+.head__in{display:flex;align-items:center;gap:var(--s4);min-height:64px}
+.logo{display:flex;align-items:center;gap:11px}
+.logo__mark{width:42px;height:42px;flex:0 0 auto}
+.logo__txt{display:flex;align-items:baseline;gap:6px;font-weight:900}
+.logo__txt .k{color:#fff;font-size:23px;font-style:italic;letter-spacing:-.02em}
+.logo__txt .kr{color:#fff;font-size:19px}
+.logo__txt .bt{align-self:center;background:rgba(255,255,255,.22);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.35)}
+.head__cta{margin-left:auto;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);color:#fff;
+  border:1px solid rgba(255,255,255,.5);font-weight:800;font-size:var(--f-15);padding:10px 18px;border-radius:11px}
+.head__cta:hover{background:#fff;color:var(--brand-2);border-color:#fff}
+.head__cta svg{width:18px;height:18px}
+/* ── /MODULE:header ────────────────────────────────────────────── */
+
+/* ── HERO (오렌지 캔버스, 중앙 정렬) ──────────────────────────── */
+.hero{position:relative;overflow:hidden;text-align:center;color:#fff;padding:124px 0 200px;
+  background:linear-gradient(165deg,#ff7d18 0%,var(--brand-2) 55%,var(--brand-deep) 100%)}
+.hero__art{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.9}
+.hero__in{position:relative;z-index:1;max-width:820px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#fff;font-size:var(--f-13);font-weight:800;letter-spacing:.16em;
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:8px 16px;border-radius:999px;margin-bottom:var(--s6)}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.25)}
+.hero h1{font-size:var(--f-56);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin:0 0 var(--s5);color:#fff}
+.hero .lead{color:rgba(255,255,255,.92);font-size:var(--f-20);max-width:52ch;margin:0 auto var(--s7)}
+.hero__cta{display:inline-flex;flex-wrap:wrap;gap:var(--s3);justify-content:center}
+.btn-main{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap;background:#fff;color:var(--brand-2);font-weight:900;font-size:var(--f-20);
+  padding:16px 30px;border-radius:14px;box-shadow:0 20px 44px rgba(120,30,0,.28)}
+.btn-main:hover{transform:translateY(-2px)}
+.btn-main svg{width:22px;height:22px;flex:0 0 auto}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;color:#fff;font-weight:800;font-size:var(--f-17);
+  padding:16px 22px;border-radius:14px;border:1px solid rgba(255,255,255,.5)}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.btn-ghost svg{width:20px;height:20px;flex:0 0 auto}
+.hero__badges{list-style:none;display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:var(--s7) 0 0;justify-content:center}
+.hero__badges li{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  color:#fff;font-size:var(--f-13);font-weight:700;padding:8px 14px;border-radius:999px}
+.hero__badges svg{width:15px;height:15px}
+/* 웨이브 디바이더 */
+.wave{position:absolute;left:0;right:0;bottom:-1px;z-index:1;width:100%;height:120px;display:block}
+
+/* ── 다운로드 레일(웨이브 경계에 걸친 가로 2카드) ─────────────── */
+.rail{position:relative;z-index:3;margin-top:-96px}
+.rail__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)}
+.rail a{display:flex;align-items:center;gap:var(--s4);background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);
+  padding:var(--s5) var(--s6);box-shadow:var(--sh-3);transition:.15s}
+.rail a:hover{transform:translateY(-3px)}
+.rail .ico{width:56px;height:56px;flex:0 0 auto;border-radius:16px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-2)}
+.rail .ey{font-size:var(--f-13);letter-spacing:.12em;font-weight:800;color:var(--brand-2)}
+.rail .txt strong{display:block;font-size:var(--f-20);color:var(--ink);margin:2px 0}
+.rail .txt span{font-size:var(--f-13);color:var(--ink-3)}
+.rail .arw{margin-left:auto;color:var(--ink-3);font-size:22px}
+.rail a.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));border-color:transparent;box-shadow:var(--sh-glow)}
+.rail a.primary .ico{background:rgba(255,255,255,.24);color:#fff}
+.rail a.primary .ey{color:#ffe6d3}
+.rail a.primary .txt strong{color:#fff}
+.rail a.primary .txt span{color:#ffe6d3}
+.rail a.primary .arw{color:#fff}
+
+/* ── 스텝: 지그재그 타임라인 ──────────────────────────────────── */
+.steps-sec{padding:var(--s9) 0}
+.shead{text-align:center;max-width:640px;margin:0 auto var(--s8)}
+.shead .tag{color:var(--brand-2);font-size:var(--f-13);font-weight:800;letter-spacing:.14em}
+.shead h2{font-size:var(--f-34);font-weight:900;letter-spacing:-.01em;margin:var(--s3) 0 var(--s3)}
+.shead p{color:var(--ink-3);margin:0;font-size:var(--f-17)}
+.tl{position:relative;max-width:960px;margin:0 auto}
+.tl::before{content:"";position:absolute;left:50%;top:12px;bottom:12px;width:3px;transform:translateX(-50%);
+  background:linear-gradient(180deg,var(--brand-line),var(--brand),var(--brand-line));border-radius:3px}
+.tl__row{position:relative;display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;margin:var(--s5) 0}
+.tl__node{grid-column:2;justify-self:center;width:56px;height:56px;border-radius:50%;z-index:1;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:grid;place-items:center;
+  font-weight:900;font-size:var(--f-20);box-shadow:0 8px 20px rgba(214,68,0,.35),0 0 0 6px #fff}
+.tl__card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:var(--s5) var(--s6);box-shadow:var(--sh-2)}
+.tl__card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-2);margin-bottom:var(--s3)}
+.tl__card h3{margin:0 0 5px;font-size:var(--f-20);font-weight:800}
+.tl__card p{margin:0;color:var(--ink-2);font-size:var(--f-15)}
+.tl__row:nth-child(odd) .tl__card{grid-column:1;text-align:right}
+.tl__row:nth-child(odd) .tl__card .ic{margin-left:auto}
+.tl__row:nth-child(even) .tl__card{grid-column:3}
+
+/* ── 접속번호 콘솔(중앙 단일 열) ──────────────────────────────── */
+.code-sec{padding:0 0 var(--s9)}
+.console{max-width:720px;margin:0 auto;text-align:center;background:var(--d0);color:#fff;border-radius:var(--r-xl);
+  padding:var(--s8) var(--s6);position:relative;overflow:hidden;box-shadow:var(--sh-3)}
+.console__bg{position:absolute;inset:0;z-index:0;background:radial-gradient(460px 300px at 50% 0,rgba(255,108,0,.3),transparent 65%)}
+.console>*{position:relative;z-index:1}
+.console__top{display:inline-flex;align-items:center;gap:8px;font-size:var(--f-13);font-weight:700;color:#d9ccc2;margin-bottom:var(--s5)}
+.console__top .live{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(34,168,98,.25)}
+.console__num{font-family:"SFMono-Regular",Consolas,monospace;font-weight:800;font-size:clamp(56px,10vw,88px);letter-spacing:.18em;color:#fff;line-height:1}
+.console h3{margin:var(--s6) 0 var(--s2);font-size:var(--f-24)}
+.console p{margin:0 auto;max-width:46ch;color:#d9ccc2;font-size:var(--f-17)}
+.pill{display:inline-block;background:rgba(255,108,0,.2);color:var(--brand-3);font-size:12px;font-weight:800;padding:3px 10px;border-radius:7px;margin-left:8px;vertical-align:middle}
+
+/* ── CTA 밴드 ──────────────────────────────────────────────────── */
+.band{background:var(--bg-warm);border-top:1px solid var(--line);text-align:center;padding:var(--s9) 0}
+.band strong{display:block;font-size:var(--f-34);font-weight:900;color:var(--ink)}
+.band p{color:var(--ink-3);margin:var(--s3) 0 var(--s6);font-size:var(--f-17)}
+.band a{display:inline-flex;align-items:center;gap:11px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;font-weight:900;font-size:var(--f-24);padding:16px 34px;border-radius:14px;box-shadow:var(--sh-glow)}
+.band svg{width:24px;height:24px}
+
+/* ── MODULE:footer ─────────────────────────────────────────────── */
+.foot{background:var(--d0);color:var(--d-ink-3);font-size:var(--f-13);padding:var(--s7) 0}
+.foot__in{display:flex;flex-wrap:wrap;gap:6px 24px;align-items:center;justify-content:space-between}
+.foot b{color:#fff}
+/* ── /MODULE:footer ────────────────────────────────────────────── */
+
+.dock{display:none}
+@keyframes pulse{0%{opacity:.5;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.5)}}
+.hero__art .sig{transform-origin:360px 300px;animation:pulse 3.6s ease-out infinite}
+.hero__art .sig.b{animation-delay:1.2s}
+
+@media (max-width:820px){
+  .hero{padding:130px 0 170px}
+  .rail__grid{grid-template-columns:1fr;gap:var(--s4)}
+  /* 타임라인: 좌측 레일로 접기 */
+  .tl::before{left:26px}
+  .tl__row{grid-template-columns:52px 1fr;gap:var(--s4);margin:var(--s4) 0}
+  .tl__node{grid-column:1;width:52px;height:52px}
+  .tl__row .tl__card,.tl__row:nth-child(odd) .tl__card,.tl__row:nth-child(even) .tl__card{grid-column:2;text-align:left}
+  .tl__row:nth-child(odd) .tl__card .ic{margin-left:0}
+}
+@media (max-width:640px){
+  .only-mobile{display:initial}
+  body{padding-bottom:88px}
+  .head__cta{display:none}
+  .hero{padding:104px 0 150px}
+  .hero h1{font-size:clamp(30px,9vw,42px)}
+  .hero .lead{font-size:var(--f-17)}
+  .btn-main,.btn-ghost{width:100%;justify-content:center}
+  .dock{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;gap:var(--s2);
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(33,26,20,.97);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.1)}
+  .dock a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;border-radius:var(--r-s);font-weight:900;font-size:var(--f-17)}
+  .dock .primary{flex:1;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;box-shadow:var(--sh-glow)}
+  .dock .call{width:60px;background:rgba(255,108,0,.2);color:var(--brand-3);border:1px solid rgba(255,142,60,.45)}
+  .dock svg{width:22px;height:22px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- 검토용 안내(배포 시 삭제) -->
+<div class="review">검토용 미리보기 · 다운로드 주소와 접속번호는 <b>seetrol 실제 값으로 교체 예정</b>. 모바일은 창을 좁혀 확인하세요.</div>
+
+<!-- MODULE:header -->
+<header class="head"><div class="wrap head__in">
+  <a class="logo" href="#" aria-label="코코렌탈 서울 용산점">
+    <svg class="logo__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M24 5a19 19 0 100 38" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/>
+      <path d="M31 12a15 15 0 010 24" stroke="rgba(255,255,255,.7)" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <span class="logo__txt"><span class="k">KOCO</span><span class="kr">코코렌탈</span><span class="bt">용산점</span></span>
+  </a>
+  <a class="head__cta" href="#download">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+    프로그램 다운로드
+  </a>
+</div></header>
+<!-- /MODULE:header -->
+
+<main>
+  <section class="hero">
+    <!-- 오렌지 캔버스 위 흰 라인 아트(자기완결 SVG) -->
+    <svg class="hero__art" viewBox="0 0 1440 760" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+      <g stroke="#fff" opacity=".16">
+        <circle class="sig"   cx="360" cy="300" r="170" stroke-width="1.4"/>
+        <circle class="sig b" cx="360" cy="300" r="170" stroke-width="1.4"/>
+        <circle cx="360" cy="300" r="250" stroke-width="1.2"/>
+        <circle cx="1120" cy="470" r="150" stroke-width="1.2"/>
+        <circle cx="1120" cy="470" r="220" stroke-width="1"/>
+      </g>
+      <g stroke="#fff" opacity=".22" stroke-dasharray="4 7" stroke-width="1.3">
+        <path d="M360 300L120 140M360 300L150 520M1120 470L1330 300M1120 470L1300 640"/>
+      </g>
+      <g fill="#fff" opacity=".5">
+        <circle cx="120" cy="140" r="5"/><circle cx="150" cy="520" r="4"/>
+        <circle cx="1330" cy="300" r="5"/><circle cx="1300" cy="640" r="4"/>
+        <circle cx="700" cy="90" r="3"/><circle cx="980" cy="150" r="3"/>
+      </g>
+    </svg>
+
+    <div class="wrap hero__in">
+      <span class="eyebrow"><span class="dot"></span>SEETROL SECURE REMOTE SUPPORT</span>
+      <h1>원격지원<br>프로그램 다운로드</h1>
+      <p class="lead">상담사 안내에 따라 원격지원 프로그램을 내려받아 실행해 주세요. seetrol 보안 연결로 화면 상태를 함께 확인하고 필요한 조치를 안내해 드립니다.</p>
+      <div class="hero__cta">
+        <a class="btn-main" href="http://oa.seetrol.com/" data-review="seetrol-download-url" id="download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+          원격지원 프로그램 받기
+        </a>
+        <a class="btn-ghost" href="tel:0271196244">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 012-2z"/></svg>
+          02-711-9624
+        </a>
+      </div>
+      <ul class="hero__badges">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M13 3L4 14h7l-1 7 9-11h-7z"/></svg>빠른 접속</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3l7 3v5c0 4.4-2.8 7.7-7 10-4.2-2.3-7-5.6-7-10V6z"/><path d="M9 12l2 2 4-5"/></svg>안전한 보안연결</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8"/></svg>원격데이터확인</li>
+      </ul>
+    </div>
+
+    <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 46C240 108 560 12 780 34C1010 57 1230 116 1440 74V120H0Z" fill="#ffffff"/>
+    </svg>
+  </section>
+
+  <!-- 다운로드 레일(웨이브 경계에 걸침) -->
+  <section class="rail"><div class="wrap"><div class="rail__grid">
+    <a class="primary" href="http://oa.seetrol.com/" data-review="seetrol-download-url">
+      <span class="ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></span>
+      <span class="txt"><span class="ey">DOWNLOAD</span><strong>원격요청 다운로드</strong><span>seetrol 기본 원격지원</span></span><span class="arw">→</span></a>
+    <a href="http://oa.seetrol.com/" data-review="seetrol-firewall-url">
+      <span class="ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3l7 3v5c0 4.4-2.8 7.7-7 10-4.2-2.3-7-5.6-7-10V6z"/><path d="M9 12l2 2 4-5"/></svg></span>
+      <span class="txt"><span class="ey">FIREWALL</span><strong>방화벽 우회 버전</strong><span>접속이 막힐 때 사용하는 대체 버전</span></span><span class="arw">→</span></a>
+  </div></div></section>
+
+  <section class="steps-sec"><div class="wrap">
+    <div class="shead"><span class="tag">REMOTE GUIDE</span><h2>원격지원 진행 순서</h2><p>설치가 어렵거나 접속이 되지 않으면 전화 상담으로 바로 안내받을 수 있습니다.</p></div>
+    <div class="tl">
+      <div class="tl__row">
+        <div class="tl__card"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v11"/><path d="M8 10l4 4 4-4"/><path d="M6 21h12"/></svg></span><h3>프로그램 받기</h3><p>주황색 버튼을 눌러 원격지원 프로그램을 내려받습니다.</p></div>
+        <div class="tl__node">1</div>
+      </div>
+      <div class="tl__row">
+        <div class="tl__node">2</div>
+        <div class="tl__card"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M9 21h6"/></svg></span><h3>실행하기</h3><p>내려받은 파일을 두 번 눌러 실행하면 접속번호가 나타납니다.</p></div>
+      </div>
+      <div class="tl__row">
+        <div class="tl__card"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 012-2z"/></svg></span><h3>번호 불러주기</h3><p>화면의 숫자를 상담사에게 알려주면 연결이 시작됩니다.</p></div>
+        <div class="tl__node">3</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="code-sec"><div class="wrap">
+    <div class="console">
+      <div class="console__bg"></div>
+      <div class="console__top"><span class="live"></span>seetrol 원격지원 · 연결 대기</div>
+      <div class="console__num" data-review="access-code-digits">0000</div>
+      <h3>실행하면 화면에 접속번호가 표시됩니다<span class="pill">확인 필요</span></h3>
+      <p>표시된 숫자를 상담사에게 그대로 불러주시면 원격지원 연결을 안내해 드립니다.</p>
+    </div>
+  </div></section>
+
+  <section class="band"><div class="wrap">
+    <strong>원격지원이 필요하신가요?</strong>
+    <p>상담사 안내에 따라 원격지원 서비스를 받아보세요.</p>
+    <a href="tel:0271196244"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 012-2z"/></svg>02-711-9624 전화상담</a>
+  </div></section>
+</main>
+
+<!-- MODULE:footer -->
+<footer class="foot"><div class="wrap foot__in">
+  <span><b>코코렌탈 서울 용산점</b> · ㈜제이앤씨솔루션 · 복사기 · 노트북 · 컴퓨터 렌탈 / 전문 AS</span>
+  <span>Copyright(c) KOCO Rental Yongsan. All Rights Reserved.</span>
+</div></footer>
+<!-- /MODULE:footer -->
+
+<!-- 모바일 하단 고정 액션 바 -->
+<nav class="dock only-mobile" aria-label="원격지원 빠른 실행">
+  <a class="primary" href="http://oa.seetrol.com/" data-review="seetrol-download-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v12"/><path d="M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>프로그램 받기</a>
+  <a class="call" href="tel:0271196244" aria-label="전화상담"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 012-2z"/></svg></a>
+</nav>
+
+</body>
+</html>
